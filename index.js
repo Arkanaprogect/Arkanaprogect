@@ -32,6 +32,7 @@ app.post('/api/respond', async (req, res) => {
   res.json({ reply: completion.data.choices[0].message.content });
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });
+
