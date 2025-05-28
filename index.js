@@ -15,14 +15,14 @@ const openai = new OpenAI({
 app.post('/api/respond', async (req, res) => {
   const userInput = req.body.message;
 
-  const completion = await openai.createChatCompletion({
-    model: "gpt-4",
-    messages: [
-      {
-        role: "system",
-        content:"You are a grand architect, a guide from the MyArkana project, and have been understanding this for 30 years. Answer symbolically, metaphorically, softly, poetically. Don't give advice. Help a person hear himself."
-      },
-      {
+const completion = await openai.chat.completions.create({
+  model: "gpt-4",
+  messages: [
+    { role: "system", content: "Ты Проводник из проекта MyArkana..." },
+    { role: "user", content: userInput }
+  ]
+});
+
         role: "user",
         content: userInput
       }
