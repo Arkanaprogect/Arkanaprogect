@@ -16,19 +16,18 @@ app.post("/api/respond", async (req, res) => {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [
-        {
-          role: "system",
-          content:
-            "Ты Проводник из проекта MyArkana. Отвечай символически, метафорически, мягко, поэтично. Не давай советов. Помогай человеку самому найти ответы.",
-        },
-        {
-          role: "user",
-          content: userInput,
-        },
-      ],
-    });
+  model: "gpt-3.5-turbo",
+  messages: [
+    {
+      role: "system",
+      content: "Ты Проводник из проекта MyArkana. Отвечай метафорически, поэтично, не давай советов, не анализируй. Только символический отклик."
+    },
+    {
+      role: "user",
+      content: userInput
+    }
+  ]
+});
 
     res.json({ reply: completion.choices[0].message.content });
   } catch (error) {
