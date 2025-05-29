@@ -1,38 +1,42 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 const OpenAI = require("openai");
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
-app.use(cors({ origin: '*' }));
-
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-app.post('/api/respond', async (req, res) => {
+app.post("/api/respond", async (req, res) => {
   const userInput = req.body.message;
 
-const completion = await openai.chat.completions.create({
-  model: "gpt-4",
-  messages: [
-    { role: "system", content: "Ты Проводник из проекта MyArkana..." },
-    { role: "user", content: userInput }
-  ]
-});
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content:
+            "Ты Проводник из проекта MyArkana. Отвечай символически, метафорически, мягко, поэтично. Не давай советов. Помогай человеку самому найти ответы.",
+        },
+        {
+          role: "user",
+          content: userInput,
+        },
+      ],
+    });
 
-        role: "user",
-        content: userInput
-      }
-    ]
-  });
-
-  res.json({ reply: completion.data.choices[0].message.content });
+    res.json({ reply: completion.choices[0].message.content });
+  } catch (error) {
+    console.error("OpenAI Error:", error);
+    res.status(500).json({ error: "Что-то пошло не так..." });
+  }
 });
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+  console.log(`✅ Server is running on port ${process.env.PORT || 3000}`);
 });
-
