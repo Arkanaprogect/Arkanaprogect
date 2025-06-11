@@ -42,8 +42,6 @@ app.post("/api/respond", async (req, res) => {
   }
 }
 
-
-
     },
     {
       role: "user",
